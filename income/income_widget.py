@@ -47,12 +47,12 @@ class IncomeWidget(QWidget):
     merge_data = self.merge_data(has_phone_number_data, input_workorder_path)
     # 第三步：把'学费报表'中金额大于0的数据抽取出来，按金额降序，存入'工单报表'
     profitable_tuition_fee_data = self.calc_profitable_tuition_fee(input_tuition_fee_path, input_workorder_path)
-    # # 第四步：把profitable_tuition_fee数据和merge数据通过手机号进行合并，并存入'工单报表'
-    # merge_money_data = self.merge_money_data(merge_data, profitable_tuition_fee_data, input_workorder_path)
-    # # 第五步：把merge_money数据中符合时间差的数据抽离出来
-    # valid_income_data = self.extract_valid_income_data(merge_money_data, input_workorder_path)
-    # # 第六步：统计每个人的金额，存入personal_income页
-    # self.calc_personal_income(valid_income_data, input_workorder_path)
+    # 第四步：把profitable_tuition_fee数据和merge数据通过手机号进行合并，并存入'工单报表'
+    merge_money_data = self.merge_money_data(merge_data, profitable_tuition_fee_data, input_workorder_path)
+    # 第五步：把merge_money数据中符合时间差的数据抽离出来
+    valid_income_data = self.extract_valid_income_data(merge_money_data, input_workorder_path)
+    # 第六步：统计每个人的金额，存入personal_income页
+    self.calc_personal_income(valid_income_data, input_workorder_path)
     QMessageBox.information(self, 'info', '计算完成！')
 
   def calc_has_phone_number(self, input_session_records_path):
