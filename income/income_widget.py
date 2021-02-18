@@ -41,18 +41,23 @@ class IncomeWidget(QWidget):
     input_workorder_path = self.ui.lineEdit_workorder_filepath.text()
     input_session_records_path = self.ui.lineEdit_session_filepath.text()
     input_tuition_fee_path = self.ui.lineEdit_fee_filepath.text()
-    # 第一步：把'会话记录报表'中有电话的筛出来，并存入has_phone_number_data页中
-    has_phone_number_data = self.calc_has_phone_number(input_session_records_path)
-    # 第二步：把'会话记录报表'有效数据合并到'工单报表'
-    merge_data = self.merge_data(has_phone_number_data, input_workorder_path)
-    # 第三步：把'学费报表'中金额大于0的数据抽取出来，按金额降序，存入'工单报表'
-    profitable_tuition_fee_data = self.calc_profitable_tuition_fee(input_tuition_fee_path, input_workorder_path)
-    # 第四步：把profitable_tuition_fee数据和merge数据通过手机号进行合并，并存入'工单报表'
-    merge_money_data = self.merge_money_data(merge_data, profitable_tuition_fee_data, input_workorder_path)
-    # 第五步：把merge_money数据中符合时间差的数据抽离出来
-    valid_income_data = self.extract_valid_income_data(merge_money_data, input_workorder_path)
-    # 第六步：统计每个人的金额，存入personal_income页
-    self.calc_personal_income(valid_income_data, input_workorder_path)
+    try:
+      # 第一步：把'会话记录报表'中有电话的筛出来，并存入has_phone_number_data页中
+      has_phone_number_data = self.calc_has_phone_number(input_session_records_path)
+      # 第二步：把'会话记录报表'有效数据合并到'工单报表'
+      merge_data = self.merge_data(has_phone_number_data, input_workorder_path)
+      # 第三步：把'学费报表'中金额大于0的数据抽取出来，按金额降序，存入'工单报表'
+      profitable_tuition_fee_data = self.calc_profitable_tuition_fee(input_tuition_fee_path, input_workorder_path)
+      # 第四步：把profitable_tuition_fee数据和merge数据通过手机号进行合并，并存入'工单报表'
+      merge_money_data = self.merge_money_data(merge_data, profitable_tuition_fee_data, input_workorder_path)
+      # 第五步：把merge_money数据中符合时间差的数据抽离出来
+      valid_income_data = self.extract_valid_income_data(merge_money_data, input_workorder_path)
+      # 第六步：统计每个人的金额，存入personal_income页
+      self.calc_personal_income(valid_income_data, input_workorder_path)
+    except Exception as e:
+      logging.exception(e)
+      QMessageBox.warning(self, 'warning', '计算过程出错，请查看log具体错误信息')
+      return
     QMessageBox.information(self, 'info', '计算完成！')
 
   def calc_has_phone_number(self, input_session_records_path):
@@ -78,7 +83,13 @@ class IncomeWidget(QWidget):
     return merge_data
 
   def calc_profitable_tuition_fee(self, input_tuition_fee_path, input_workorder_path):
+    # try:
     tuition_fee_data = pd.read_excel(input_tuition_fee_path, usecols=['手机号', '收款/退款金额', '收款/退款日期'], dtype={'手机号': str, '收款/退款金额': float})
+    # except:
+    #   raise Exception("读取文件失败，解决方法：1.wps打开文件另存为，再重新执行程序")
+    # check data is not null
+    if tuition_fee_data['手机号'].isnull().sum() >= len(tuition_fee_data['手机号'].index):
+      raise Exception("不合理数据：学费数据手机号全为空")
     tuition_fee_data['收款/退款日期'] = pd.to_datetime(tuition_fee_data['收款/退款日期'],format= '%Y-%m-%d %H:%M:%S')   # 更改时间为统一格式
     profitable_tuition_fee_data = tuition_fee_data.loc[tuition_fee_data['收款/退款金额']>0].copy()
     profitable_tuition_fee_data = profitable_tuition_fee_data[['手机号', '收款/退款金额', '收款/退款日期']]
