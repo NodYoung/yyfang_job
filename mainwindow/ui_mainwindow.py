@@ -25,8 +25,11 @@ class Ui_MainWindow(object):
         self.action_calls.setObjectName("action_calls")
         self.action_income = QtWidgets.QAction(MainWindow)
         self.action_income.setObjectName("action_income")
+        self.action_online = QtWidgets.QAction(MainWindow)
+        self.action_online.setObjectName("action_online")
         self.toolBar.addAction(self.action_calls)
         self.toolBar.addAction(self.action_income)
+        self.toolBar.addAction(self.action_online)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -37,4 +40,5 @@ class Ui_MainWindow(object):
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.action_calls.setText(_translate("MainWindow", "呼入统计"))
         self.action_income.setText(_translate("MainWindow", "收入统计"))
+        self.action_online.setText(_translate("MainWindow", "在线咨询统计"))
 

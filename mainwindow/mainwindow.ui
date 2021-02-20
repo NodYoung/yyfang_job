@@ -27,6 +27,7 @@
    </attribute>
    <addaction name="action_calls"/>
    <addaction name="action_income"/>
+   <addaction name="action_online"/>
   </widget>
   <action name="action_calls">
    <property name="text">
@@ -36,6 +37,11 @@
   <action name="action_income">
    <property name="text">
     <string>收入统计</string>
+   </property>
+  </action>
+  <action name="action_online">
+   <property name="text">
+    <string>在线咨询统计</string>
    </property>
   </action>
  </widget>
