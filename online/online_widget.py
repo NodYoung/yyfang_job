@@ -11,7 +11,7 @@ class OnlineWidget(QWidget):
     super().__init__()
     self.ui = Ui_OnlineWidget()
     self.ui.setupUi(self)
-    self.ui.lineEdit_filepath.setText('D:/yyfang/210216/data/session_record_sample/receptionRecord_20210215-20210217_c4856183-1f05-4a30-8d2d-80cc3c63a501.xlsx')
+    # self.ui.lineEdit_filepath.setText('D:/yyfang/210216/data/session_record_sample/receptionRecord_20210215-20210217_c4856183-1f05-4a30-8d2d-80cc3c63a501.xlsx')
 
   @pyqtSlot()
   def on_pushButton_file_browse_clicked(self):

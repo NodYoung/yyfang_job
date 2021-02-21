@@ -11,7 +11,7 @@ class CallsWidget(QWidget):
     super().__init__()
     self.ui = Ui_CallsWidget()
     self.ui.setupUi(self)
-    self.ui.lineEdit_filepath.setText('D:/yyfang/210216/data/calls_sample/呼入量.xlsx')
+    # self.ui.lineEdit_filepath.setText('D:/yyfang/210216/data/calls_sample/呼入量.xlsx')
     
   @pyqtSlot()
   def on_pushButton_file_browse_clicked(self):
