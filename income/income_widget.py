@@ -13,9 +13,6 @@ class IncomeWidget(QWidget):
     super().__init__()
     self.ui = Ui_IncomeWidget()
     self.ui.setupUi(self)
-    # self.ui.lineEdit_workorder_filepath.setText('D:/yyfang/210216/data/income_sample/工单报表.xlsx')
-    # self.ui.lineEdit_session_filepath.setText('D:/yyfang/210216/data/income_sample/会话记录报表.xlsx')
-    # self.ui.lineEdit_fee_filepath.setText('D:/yyfang/210216/data/income_sample/学费报表.xlsx')
     pd.set_option('display.max_columns', None)
 
   @pyqtSlot()
